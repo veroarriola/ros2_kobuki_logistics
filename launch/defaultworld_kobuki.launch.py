@@ -16,7 +16,8 @@ os.environ['IGN_GAZEBO_RESOURCE_PATH'] = \
     os.pathsep + os.path.join(
         get_package_share_directory('gz_rcll_models'),
         'models'
-    )
+    ) + \
+    os.pathsep + os.path.join(get_package_share_directory('kobuki_description'), '..')
 print(os.environ['IGN_GAZEBO_RESOURCE_PATH'])
 
 def generate_launch_description():
@@ -37,6 +38,11 @@ def generate_launch_description():
         world_file_name
     )
 
+    kobuki_file = os.path.join('kobuki_description'
+        'urdf',
+        'kobuki_standalone.urdf'
+    )
+
     #urdf = os.path.join(get_package_share_directory(
     #    'gz_rcll_models'), 'urdf', 'my_robot.urdf')
 
@@ -50,6 +56,11 @@ def generate_launch_description():
         gz_rcll_launch_arg,
         ExecuteProcess(
             cmd=['ign', 'gazebo', '-v', verbose, world_file_name],
+            output='screen'),
+
+        ExecuteProcess(
+            cmd=['ign', 'service', '-s', '/world/world_demo/create',
+            """--reqtype ignition.msgs.EntityFactory --reptype ignition.msgs.Boolean --timeout 300 --req 'sdf_filename:" """ + kobuki_file + """ " name: "kobuki"' """],
             output='screen'),
 
         #ExecuteProcess(

@@ -7,6 +7,14 @@ Clonar en ```src``` los repos:
 * https://github.com/veroarriola/ros2_kobuki
 * https://github.com/veroarriola/gz_rcll
 
+## Compilar
+
+Para compilar sólo este paquete:
+
+```
+colcon build --packages-select ros2_kobuki_logistics
+```
+
 # Demo
 
 Invocar:
